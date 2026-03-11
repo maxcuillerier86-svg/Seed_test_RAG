@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeedGuide - AI-Powered Growing Assistant</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1><span class="logo-icon">&#127793;</span> SeedGuide</h1>
+            <p class="tagline">Your AI-powered path from seed to harvest</p>
+            <nav>
+                <a href="#browse" class="nav-link active" data-section="browse">Browse Seeds</a>
+                <a href="#my-garden" class="nav-link" data-section="my-garden">My Garden</a>
+                <a href="#library" class="nav-link" data-section="library">Library Resources</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Section: Browse Seeds -->
+        <section id="browse" class="section active">
+            <div class="search-bar">
+                <input type="text" id="seed-search" placeholder="Search for a seed (e.g., tomato, basil, carrot...)">
+                <div class="filter-pills">
+                    <button class="pill active" data-filter="all">All</button>
+                    <button class="pill" data-filter="Vegetable">Vegetables</button>
+                    <button class="pill" data-filter="Herb">Herbs</button>
+                    <button class="pill" data-filter="Fruit">Fruits</button>
+                </div>
+            </div>
+            <div id="seed-grid" class="seed-grid">
+                <!-- Seed cards injected here -->
+            </div>
+        </section>
+
+        <!-- Section: Seed Detail / Guide -->
+        <section id="seed-detail" class="section">
+            <button class="back-btn" onclick="showSection('browse')">&larr; Back to Seeds</button>
+            <div id="seed-detail-content">
+                <!-- Populated dynamically -->
+            </div>
+        </section>
+
+        <!-- Section: Personalized Guide -->
+        <section id="guide-setup" class="section">
+            <button class="back-btn" onclick="showSeedDetail(currentSeedId)">&larr; Back to Seed Info</button>
+            <div class="guide-form-container">
+                <h2>Personalize Your Growing Guide</h2>
+                <p class="subtitle" id="guide-seed-name"></p>
+                <form id="guide-form">
+                    <input type="hidden" id="guide-seed-id">
+                    <div class="form-group">
+                        <label for="space-type">Where will you be growing?</label>
+                        <div class="radio-cards">
+                            <label class="radio-card">
+                                <input type="radio" name="space_type" value="indoor">
+                                <div class="card-content">
+                                    <span class="card-icon">&#127968;</span>
+                                    <span>Indoors</span>
+                                </div>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="space_type" value="balcony">
+                                <div class="card-content">
+                                    <span class="card-icon">&#127747;</span>
+                                    <span>Balcony</span>
+                                </div>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="space_type" value="small_yard">
+                                <div class="card-content">
+                                    <span class="card-icon">&#127795;</span>
+                                    <span>Small Yard</span>
+                                </div>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="space_type" value="outdoor_garden" checked>
+                                <div class="card-content">
+                                    <span class="card-icon">&#127806;</span>
+                                    <span>Garden</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="experience">Your gardening experience</label>
+                        <select id="experience" name="experience">
+                            <option value="beginner">Beginner - first time growing</option>
+                            <option value="intermediate">Intermediate - grown a few things</option>
+                            <option value="advanced">Advanced - experienced gardener</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="plant-date">When do you want to start? (optional)</label>
+                        <input type="date" id="plant-date" name="plant_date">
+                        <small>Setting a date enables step-by-step reminders</small>
+                    </div>
+                    <button type="submit" class="btn-primary">Generate My Growing Guide</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Section: Generated Guide -->
+        <section id="guide-result" class="section">
+            <button class="back-btn" onclick="showSection('guide-setup')">&larr; Adjust Settings</button>
+            <div id="guide-result-content">
+                <!-- Populated dynamically -->
+            </div>
+        </section>
+
+        <!-- Section: My Garden / Planting Schedule -->
+        <section id="my-garden" class="section">
+            <h2>My Garden Planner</h2>
+            <p class="subtitle">Track what you're growing and get step-by-step reminders</p>
+            <div id="garden-empty" class="empty-state">
+                <span class="empty-icon">&#127807;</span>
+                <h3>Your garden is empty</h3>
+                <p>Browse seeds and add them to your garden to start tracking your growing journey!</p>
+                <button class="btn-primary" onclick="showSection('browse')">Browse Seeds</button>
+            </div>
+            <div id="garden-plants" class="garden-plants">
+                <!-- Populated dynamically -->
+            </div>
+        </section>
+
+        <!-- Section: Library Resources -->
+        <section id="library" class="section">
+            <h2>Library &amp; Community Resources</h2>
+            <p class="subtitle">Free resources to help you grow — your library card is your garden membership!</p>
+            <div id="library-content" class="library-grid">
+                <!-- Populated dynamically -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>SeedGuide — Lowering the barrier to growing your own food, one seed at a time.</p>
+        <p class="footer-sub">Connect with your local library for free seeds, tools, and knowledge.</p>
+    </footer>
+
+    <script src="/app.js"></script>
+</body>
+</html>

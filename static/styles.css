@@ -1,0 +1,978 @@
+/* === SeedGuide - AI-Powered Growing Assistant === */
+
+:root {
+    --green-50: #f0fdf4;
+    --green-100: #dcfce7;
+    --green-200: #bbf7d0;
+    --green-300: #86efac;
+    --green-400: #4ade80;
+    --green-500: #22c55e;
+    --green-600: #16a34a;
+    --green-700: #15803d;
+    --green-800: #166534;
+    --green-900: #14532d;
+    --earth-100: #fef3c7;
+    --earth-200: #fde68a;
+    --earth-500: #d97706;
+    --earth-700: #92400e;
+    --sky-100: #e0f2fe;
+    --sky-500: #0ea5e9;
+    --red-100: #fee2e2;
+    --red-500: #ef4444;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    color: var(--gray-800);
+    background: var(--gray-50);
+    line-height: 1.6;
+}
+
+/* === Header === */
+header {
+    background: linear-gradient(135deg, var(--green-700) 0%, var(--green-800) 50%, var(--green-900) 100%);
+    color: white;
+    padding: 2rem 1.5rem 1rem;
+    text-align: center;
+}
+
+.header-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 0.25rem;
+}
+
+.logo-icon {
+    font-size: 1.8rem;
+}
+
+.tagline {
+    font-size: 1.05rem;
+    opacity: 0.9;
+    margin-bottom: 1.25rem;
+    font-weight: 300;
+}
+
+nav {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.nav-link {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.nav-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.15);
+}
+
+.nav-link.active {
+    color: var(--green-800);
+    background: white;
+}
+
+/* === Main === */
+main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    min-height: 70vh;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    font-size: 1.6rem;
+    color: var(--green-800);
+    margin-bottom: 0.25rem;
+}
+
+.subtitle {
+    color: var(--gray-500);
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+/* === Search & Filter === */
+.search-bar {
+    margin-bottom: 1.5rem;
+}
+
+#seed-search {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    background: white;
+    transition: border-color 0.2s;
+}
+
+#seed-search:focus {
+    outline: none;
+    border-color: var(--green-400);
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.1);
+}
+
+.filter-pills {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.pill {
+    padding: 0.4rem 1rem;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 999px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    transition: all 0.2s;
+}
+
+.pill:hover {
+    border-color: var(--green-300);
+    color: var(--green-700);
+}
+
+.pill.active {
+    background: var(--green-600);
+    color: white;
+    border-color: var(--green-600);
+}
+
+/* === Seed Grid === */
+.seed-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.seed-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+.seed-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--green-200);
+    transform: translateY(-2px);
+}
+
+.seed-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.seed-card h3 {
+    font-size: 1.15rem;
+    color: var(--green-800);
+}
+
+.category-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--green-100);
+    color: var(--green-700);
+}
+
+.category-badge.herb {
+    background: var(--earth-100);
+    color: var(--earth-700);
+}
+
+.category-badge.fruit {
+    background: var(--red-100);
+    color: var(--red-500);
+}
+
+.seed-card-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    margin-top: 0.75rem;
+}
+
+.difficulty-badge {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+}
+
+.difficulty-badge.beginner {
+    background: var(--green-100);
+    color: var(--green-700);
+}
+
+.difficulty-badge.intermediate {
+    background: var(--earth-100);
+    color: var(--earth-700);
+}
+
+/* === Back Button === */
+.back-btn {
+    background: none;
+    border: none;
+    color: var(--green-600);
+    font-size: 0.95rem;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.back-btn:hover {
+    color: var(--green-800);
+}
+
+/* === Seed Detail === */
+.detail-header {
+    background: linear-gradient(135deg, var(--green-50), var(--green-100));
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.detail-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.detail-header .varieties {
+    color: var(--gray-500);
+    font-size: 0.9rem;
+}
+
+.detail-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.stat-card .stat-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.stat-card .stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gray-400);
+    font-weight: 600;
+}
+
+.stat-card .stat-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+.detail-section {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+}
+
+.detail-section h3 {
+    font-size: 1.1rem;
+    color: var(--green-700);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detail-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.detail-section li {
+    padding: 0.4rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--gray-600);
+    font-size: 0.95rem;
+}
+
+.detail-section li::before {
+    content: "\2713";
+    position: absolute;
+    left: 0;
+    color: var(--green-500);
+    font-weight: bold;
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 0.75rem 1.75rem;
+    background: var(--green-600);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background: var(--green-700);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    display: inline-block;
+    padding: 0.6rem 1.25rem;
+    background: white;
+    color: var(--green-600);
+    border: 2px solid var(--green-600);
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background: var(--green-50);
+}
+
+.cta-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+/* === Guide Form === */
+.guide-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 0.5rem;
+}
+
+.form-group select,
+.form-group input[type="date"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    background: white;
+}
+
+.form-group select:focus,
+.form-group input[type="date"]:focus {
+    outline: none;
+    border-color: var(--green-400);
+}
+
+.form-group small {
+    display: block;
+    color: var(--gray-400);
+    margin-top: 0.35rem;
+    font-size: 0.85rem;
+}
+
+.radio-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.radio-card {
+    cursor: pointer;
+}
+
+.radio-card input {
+    display: none;
+}
+
+.radio-card .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 1rem;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius);
+    transition: all 0.2s;
+    font-weight: 500;
+    color: var(--gray-600);
+}
+
+.radio-card .card-icon {
+    font-size: 1.5rem;
+}
+
+.radio-card input:checked + .card-content {
+    border-color: var(--green-500);
+    background: var(--green-50);
+    color: var(--green-700);
+}
+
+.radio-card .card-content:hover {
+    border-color: var(--green-300);
+}
+
+/* === Guide Result === */
+.guide-overview {
+    background: linear-gradient(135deg, var(--green-50), var(--green-100));
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.guide-overview h2 {
+    margin-bottom: 0.75rem;
+}
+
+.guide-badges {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.guide-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.guide-badge.green {
+    background: var(--green-200);
+    color: var(--green-800);
+}
+
+.guide-badge.amber {
+    background: var(--earth-200);
+    color: var(--earth-700);
+}
+
+.guide-badge.blue {
+    background: var(--sky-100);
+    color: var(--sky-500);
+}
+
+.guide-section {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+}
+
+.guide-section h3 {
+    font-size: 1.1rem;
+    color: var(--green-700);
+    margin-bottom: 0.75rem;
+}
+
+.requirements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+
+.req-item {
+    padding: 0.75rem;
+    background: var(--gray-50);
+    border-radius: 8px;
+}
+
+.req-item .req-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gray-400);
+    font-weight: 600;
+}
+
+.req-item .req-value {
+    font-size: 0.9rem;
+    color: var(--gray-700);
+    font-weight: 500;
+}
+
+.equipment-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+}
+
+.equipment-list li {
+    background: var(--green-50);
+    border: 1px solid var(--green-200);
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--green-700);
+}
+
+/* === Timeline / Steps === */
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 0.75rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--green-200);
+}
+
+.timeline-step {
+    position: relative;
+    margin-bottom: 1.25rem;
+    padding-left: 1rem;
+}
+
+.timeline-step::before {
+    content: "";
+    position: absolute;
+    left: -1.65rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--green-400);
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px var(--green-200);
+}
+
+.timeline-step.past::before {
+    background: var(--gray-300);
+    box-shadow: 0 0 0 2px var(--gray-200);
+}
+
+.timeline-step.today::before {
+    background: var(--green-600);
+    box-shadow: 0 0 0 3px var(--green-200);
+    width: 14px;
+    height: 14px;
+    left: -1.7rem;
+}
+
+.timeline-step.upcoming::before {
+    background: var(--earth-500);
+    box-shadow: 0 0 0 2px var(--earth-200);
+}
+
+.timeline-week {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--green-600);
+    letter-spacing: 0.05em;
+}
+
+.timeline-date {
+    font-size: 0.8rem;
+    color: var(--gray-400);
+}
+
+.timeline-text {
+    font-size: 0.95rem;
+    color: var(--gray-600);
+    margin-top: 0.15rem;
+}
+
+.timeline-step.today .timeline-week {
+    color: var(--green-700);
+}
+
+.timeline-step.today .timeline-text {
+    color: var(--gray-800);
+    font-weight: 500;
+}
+
+/* === Tips === */
+.tip-item {
+    padding: 0.6rem 0.75rem;
+    background: var(--earth-100);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--earth-700);
+    border-left: 3px solid var(--earth-500);
+}
+
+/* === My Garden === */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--gray-400);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.empty-state h3 {
+    color: var(--gray-600);
+    margin-bottom: 0.5rem;
+}
+
+.garden-plants {
+    display: grid;
+    gap: 1rem;
+}
+
+.garden-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+}
+
+.garden-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.garden-card-header h3 {
+    color: var(--green-700);
+    font-size: 1.15rem;
+}
+
+.garden-card .next-step {
+    background: var(--green-50);
+    border: 1px solid var(--green-200);
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.garden-card .next-step-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--green-600);
+    letter-spacing: 0.05em;
+}
+
+.garden-card .next-step-text {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    margin-top: 0.15rem;
+}
+
+.remove-btn {
+    background: none;
+    border: 1px solid var(--gray-200);
+    color: var(--gray-400);
+    border-radius: 6px;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+.remove-btn:hover {
+    border-color: var(--red-500);
+    color: var(--red-500);
+}
+
+.progress-bar {
+    height: 6px;
+    background: var(--gray-100);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 0.75rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-400), var(--green-600));
+    border-radius: 999px;
+    transition: width 0.4s ease;
+}
+
+/* === Library Resources === */
+.library-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.library-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--green-500);
+}
+
+.library-card h3 {
+    color: var(--green-700);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.library-card p {
+    color: var(--gray-500);
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+}
+
+.library-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.library-card li {
+    padding: 0.3rem 0;
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    padding-left: 1.25rem;
+    position: relative;
+}
+
+.library-card li::before {
+    content: "\2022";
+    position: absolute;
+    left: 0;
+    color: var(--green-400);
+    font-weight: bold;
+}
+
+.library-card .how-to {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    background: var(--sky-100);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--gray-600);
+}
+
+.library-card .how-to strong {
+    color: var(--sky-500);
+}
+
+/* === Footer === */
+footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: var(--green-900);
+    color: rgba(255,255,255,0.7);
+    margin-top: 3rem;
+}
+
+footer p {
+    font-size: 0.9rem;
+}
+
+.footer-sub {
+    font-size: 0.8rem !important;
+    margin-top: 0.25rem;
+    opacity: 0.7;
+}
+
+/* === Responsive === */
+@media (max-width: 640px) {
+    header h1 {
+        font-size: 1.6rem;
+    }
+
+    .radio-cards {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .seed-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .requirements-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-row {
+        flex-direction: column;
+    }
+
+    .cta-row .btn-primary,
+    .cta-row .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* === Notification Toast === */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--green-700);
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 1000;
+    animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.5s forwards;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateY(-10px); }
+}
+
+/* === Add to Garden Button (animated) === */
+.btn-add-garden {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    background: var(--earth-500);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-add-garden:hover {
+    background: var(--earth-700);
+}
+
+.btn-add-garden.added {
+    background: var(--green-600);
+    pointer-events: none;
+}
+
+/* === Reminder Export === */
+.reminder-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-reminder {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 1.5px solid var(--green-300);
+    color: var(--green-700);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-reminder:hover {
+    background: var(--green-50);
+    border-color: var(--green-500);
+}
