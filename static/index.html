@@ -141,6 +141,36 @@
         <p class="footer-sub">Connect with your local library for free seeds, tools, and knowledge.</p>
     </footer>
 
+    <!-- AI Chat Widget -->
+    <div id="chat-widget" class="chat-widget">
+        <button id="chat-toggle" class="chat-toggle" onclick="toggleChat()">
+            <span class="chat-toggle-icon" id="chat-toggle-icon">&#129716;</span>
+        </button>
+        <div id="chat-panel" class="chat-panel hidden">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <span class="chat-header-icon">&#127793;</span>
+                    <div>
+                        <div class="chat-header-title">SeedGuide AI</div>
+                        <div class="chat-header-subtitle">Your gardening assistant</div>
+                    </div>
+                </div>
+                <button class="chat-close" onclick="toggleChat()">&times;</button>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="chat-message assistant">
+                    <div class="chat-bubble">
+                        Hi! I'm your AI gardening assistant. Ask me anything about growing plants — from seed selection to pest control, soil health, companion planting, and more. I know about 50+ crops!
+                    </div>
+                </div>
+            </div>
+            <form id="chat-form" class="chat-input-area" onsubmit="sendChatMessage(event)">
+                <input type="text" id="chat-input" placeholder="Ask about any plant, pest, soil..." autocomplete="off">
+                <button type="submit" class="chat-send" id="chat-send-btn">&#10148;</button>
+            </form>
+        </div>
+    </div>
+
     <script src="/app.js"></script>
 </body>
 </html>

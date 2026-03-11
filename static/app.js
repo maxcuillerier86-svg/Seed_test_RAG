@@ -651,3 +651,129 @@ function showToast(message) {
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 3000);
 }
+
+// ── AI Chat Widget ──────────────────────────────────────────────
+
+let chatHistory = [];
+let chatOpen = false;
+
+function toggleChat() {
+    chatOpen = !chatOpen;
+    const panel = document.getElementById("chat-panel");
+    const icon = document.getElementById("chat-toggle-icon");
+
+    if (chatOpen) {
+        panel.classList.remove("hidden");
+        panel.classList.add("visible");
+        icon.innerHTML = "&#10005;";
+        document.getElementById("chat-input").focus();
+    } else {
+        panel.classList.remove("visible");
+        panel.classList.add("hidden");
+        icon.innerHTML = "&#129716;";
+    }
+}
+
+async function sendChatMessage(e) {
+    e.preventDefault();
+
+    const input = document.getElementById("chat-input");
+    const message = input.value.trim();
+    if (!message) return;
+
+    // Add user message to UI
+    appendChatMessage("user", message);
+    input.value = "";
+
+    // Add to history
+    chatHistory.push({ role: "user", content: message });
+
+    // Show typing indicator
+    const typingEl = appendChatMessage("assistant", "", true);
+
+    // Disable input while waiting
+    const sendBtn = document.getElementById("chat-send-btn");
+    input.disabled = true;
+    sendBtn.disabled = true;
+
+    try {
+        const res = await fetch(`${API_BASE}/api/chat`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                message: message,
+                history: chatHistory.slice(-10), // keep last 10 messages for context
+            }),
+        });
+
+        const data = await res.json();
+
+        // Remove typing indicator
+        typingEl.remove();
+
+        if (data.error) {
+            appendChatMessage(
+                "assistant",
+                "Sorry, I encountered an error: " + data.error + "\n\nMake sure the ANTHROPIC_API_KEY environment variable is set."
+            );
+        } else {
+            appendChatMessage("assistant", data.response);
+            chatHistory.push({ role: "assistant", content: data.response });
+        }
+    } catch (err) {
+        typingEl.remove();
+        appendChatMessage(
+            "assistant",
+            "Sorry, I couldn't connect to the AI service. Make sure the server is running and ANTHROPIC_API_KEY is set."
+        );
+    }
+
+    input.disabled = false;
+    sendBtn.disabled = false;
+    input.focus();
+}
+
+function appendChatMessage(role, text, isTyping = false) {
+    const container = document.getElementById("chat-messages");
+    const msgDiv = document.createElement("div");
+    msgDiv.className = `chat-message ${role}`;
+
+    const bubble = document.createElement("div");
+    bubble.className = "chat-bubble";
+
+    if (isTyping) {
+        bubble.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+    } else {
+        // Simple markdown-like formatting
+        bubble.innerHTML = formatChatText(text);
+    }
+
+    msgDiv.appendChild(bubble);
+    container.appendChild(msgDiv);
+    container.scrollTop = container.scrollHeight;
+
+    return msgDiv;
+}
+
+function formatChatText(text) {
+    // Escape HTML
+    let html = text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+    // Bold
+    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+    // Italic
+    html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
+
+    // Line breaks
+    html = html.replace(/\n/g, "<br>");
+
+    // Bullet points
+    html = html.replace(/^- (.*?)(<br>|$)/gm, "<li>$1</li>");
+    html = html.replace(/(<li>.*<\/li>)/gs, "<ul>$1</ul>");
+
+    return html;
+}

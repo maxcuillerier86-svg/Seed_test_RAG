@@ -9,12 +9,17 @@ from datetime import datetime, timedelta
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
+from rag_engine import ensure_indexed, generate_response
+
 app = Flask(__name__, static_folder="static", static_url_path="")
 CORS(app)
 
 # Load seed data
 with open(os.path.join(os.path.dirname(__file__), "seed_data.json")) as f:
     SEED_DB = json.load(f)
+
+# Index the knowledge base at startup
+ensure_indexed()
 
 
 @app.route("/")
@@ -142,6 +147,33 @@ def search_seeds():
                 "difficulty": s["difficulty"],
             })
     return jsonify(results)
+
+
+# ── AI Chat Endpoint (RAG-powered) ──────────────────────────────
+
+
+@app.route("/api/chat", methods=["POST"])
+def chat():
+    """RAG-powered chat endpoint for live gardening help."""
+    data = request.json
+    message = data.get("message", "").strip()
+    history = data.get("history", [])
+
+    if not message:
+        return jsonify({"error": "Message is required"}), 400
+
+    try:
+        response = generate_response(message, conversation_history=history)
+        return jsonify({"response": response})
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 500
+    except Exception as e:
+        return jsonify({
+            "error": "Failed to generate response. Please check your ANTHROPIC_API_KEY."
+        }), 500
+
+
+# ── Guide Builder ────────────────────────────────────────────────
 
 
 def build_personalized_guide(seed, space_type, experience, plant_date):
